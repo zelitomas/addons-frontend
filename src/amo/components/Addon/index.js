@@ -335,7 +335,7 @@ export class AddonBase extends React.Component {
     return (
       <div className={classNames('Addon', `Addon-${addonType}`)}>
         {errorBanner}
-        <Card className="" photonStyle>
+        <Card className="Addon-header-wrapper" photonStyle>
           <header className="Addon-header">
             <h1 className="Addon-title" {...titleProps} />
             <p className="Addon-summary" {...summaryProps} />
