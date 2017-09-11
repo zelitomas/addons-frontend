@@ -4,8 +4,8 @@ import type { ErrorHandlerType } from 'core/errorHandler';
 import type { AddonType, ExternalAddonType } from 'core/types/addons';
 
 
-export const LOAD_ADDONS = 'LOAD_ADDONS';
 export const FETCH_ADDON = 'FETCH_ADDON';
+export const LOAD_ADDONS = 'LOAD_ADDONS';
 
 type ExternalAddonMap = {
   [addonSlug: string]: ExternalAddonType,

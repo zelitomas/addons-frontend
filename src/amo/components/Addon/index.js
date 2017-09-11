@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 
 import { setViewContext } from 'amo/actions/viewContext';
+import AddonBetaVersion from 'amo/components/AddonBetaVersion';
 import AddonCompatibilityError from 'amo/components/AddonCompatibilityError';
 import AddonMeta from 'amo/components/AddonMeta';
 import AddonMoreInfo from 'amo/components/AddonMoreInfo';
@@ -398,6 +399,8 @@ export class AddonBase extends React.Component {
 
           {addon ? <AddonMoreInfo addon={addon} /> : null}
           {this.renderVersionReleaseNotes()}
+
+          <AddonBetaVersion addon={addon} />
         </div>
       </div>
     );

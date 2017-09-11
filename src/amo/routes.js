@@ -2,6 +2,19 @@ import config from 'config';
 import React from 'react';
 import { IndexRoute, Route } from 'react-router';
 
+import AddonReviewList from 'amo/components/AddonReviewList';
+import AddonVersionHistory from 'amo/components/AddonVersionHistory';
+import App from 'amo/components/App';
+import CategoriesPage from 'amo/components/CategoriesPage';
+import Category from 'amo/components/Category';
+import FeaturedAddons from 'amo/components/FeaturedAddons';
+import LandingPage from 'amo/components/LandingPage';
+import Home from 'amo/components/Home';
+import Addon from 'amo/components/Addon';
+import NotAuthorized from 'amo/components/ErrorPage/NotAuthorized';
+import NotFound from 'amo/components/ErrorPage/NotFound';
+import SearchPage from 'amo/components/SearchPage';
+import ServerError from 'amo/components/ErrorPage/ServerError';
 import SimulateAsyncError from
   'core/containers/error-simulation/SimulateAsyncError';
 import SimulateClientError from
@@ -9,19 +22,6 @@ import SimulateClientError from
 import SimulateSyncError from
   'core/containers/error-simulation/SimulateSyncError';
 import HandleLogin from 'core/containers/HandleLogin';
-
-import AddonReviewList from './components/AddonReviewList';
-import App from './components/App';
-import CategoriesPage from './components/CategoriesPage';
-import Category from './components/Category';
-import FeaturedAddons from './components/FeaturedAddons';
-import LandingPage from './components/LandingPage';
-import Home from './components/Home';
-import Addon from './components/Addon';
-import NotAuthorized from './components/ErrorPage/NotAuthorized';
-import NotFound from './components/ErrorPage/NotFound';
-import SearchPage from './components/SearchPage';
-import ServerError from './components/ErrorPage/ServerError';
 
 // If you add a new route here, check that the nginx rules maintained by ops
 // are in sync. See:
@@ -32,6 +32,7 @@ export default (
     <IndexRoute component={Home} />
     <Route path="addon/:slug/" component={Addon} />
     <Route path="addon/:addonSlug/reviews/" component={AddonReviewList} />
+    <Route path="addon/:addonSlug/versions/" component={AddonVersionHistory} />
     <Route path=":visibleAddonType/categories/" component={CategoriesPage} />
     <Route path=":visibleAddonType/featured/" component={FeaturedAddons} />
     <Route path=":visibleAddonType/:slug/" component={Category} />
