@@ -61,8 +61,10 @@ export class InstallButtonBase extends React.Component {
     // OpenSearch plugins display their own prompt so using the "Add to
     // Firefox" button regardless on mozAddonManager support is a better UX.
     const useButton = (hasAddonManager !== undefined && !hasAddonManager) ||
-      addon.type === ADDON_TYPE_OPENSEARCH;
+      addon.type === ADDON_TYPE_OPENSEARCH || this.props.useButton;
     let button;
+
+    let installURL = this.props.installURL || addon.installURL;
 
     const { compatible } = getClientCompatibility({
       addon, clientApp, userAgentInfo });
@@ -91,7 +93,7 @@ export class InstallButtonBase extends React.Component {
         event.stopPropagation();
 
         _log.info('Adding OpenSearch Provider', { addon });
-        _window.external.AddSearchProvider(addon.installURL);
+        _window.external.AddSearchProvider(installURL);
 
         return false;
       };
@@ -100,7 +102,7 @@ export class InstallButtonBase extends React.Component {
           className={buttonClass}
           disabled={buttonIsDisabled}
           onClick={onClick}
-          href={addon.installURL}
+          href={installURL}
           prependClientApp={false}
           prependLang={false}
         >
@@ -118,7 +120,7 @@ export class InstallButtonBase extends React.Component {
           className={buttonClass}
           disabled={buttonIsDisabled}
           onClick={onClick}
-          href={addon.installURL}
+          href={installURL}
           prependClientApp={false}
           prependLang={false}
         >

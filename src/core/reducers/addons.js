@@ -173,6 +173,18 @@ export function createInternalAddon(
     );
   }
 
+  if (
+    apiAddon.current_beta_version &&
+    apiAddon.current_beta_version.files.length > 0
+  ) {
+    // TODO: support specific platform files.
+    // See https://github.com/mozilla/addons-frontend/issues/2998
+    addon.betaInstallURL = apiAddon.current_beta_version.files[0].url || '';
+    addon.betaIsRestartRequired = apiAddon.current_beta_version.files.some(
+      (file) => !!file.is_restart_required
+    );
+  }
+
   // Remove undefined properties entirely. This is for some legacy code
   // in Discopane that relies on spreads to combine a Discopane result
   // (which has a header and description) with a minimal add-on object.

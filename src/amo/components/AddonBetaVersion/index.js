@@ -91,10 +91,12 @@ export class AddonBetaVersionBase extends React.Component {
         <InstallButton
           {...addon}
           {...installedAddon}
-          current_version={addon.current_beta_version}
           addon={addon}
           className="Button--action Button--small"
           disabled={!isCompatible}
+          useButton
+          {...this.props}
+          installURL={addon.betaInstallURL}
           status={installStatus}
         />
       </Card>
@@ -103,7 +105,6 @@ export class AddonBetaVersionBase extends React.Component {
 }
 
 export const mapStateToProps = (state, ownProps) => {
-  console.log('OWN PROPS', ownProps);
   const addon = ownProps.addon;
   const stateToMap = {
     clientApp: state.api.clientApp,
