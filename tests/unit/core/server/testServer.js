@@ -41,7 +41,7 @@ describe(__filename, () => {
   });
 
   function createStoreAndSagas({
-    reducers = { reduxAsyncConnect, api: apiReducer, user: userReducer },
+    reducers = { api: apiReducer, user: userReducer },
   } = {}) {
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(

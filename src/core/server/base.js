@@ -12,7 +12,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import NestedStatus from 'react-nested-status';
 import { Provider } from 'react-redux';
-import { match } from 'react-router';
+import { RouterContext, match } from 'react-router';
 import { END } from 'redux-saga';
 import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
 
@@ -277,55 +277,54 @@ function baseServer(routes, createStore, {
         return next(preLoadError);
       }
 
-      return loadOnServer({ ...renderProps, store })
+      // eslint-disable-next-line global-require
+      let i18nData = {};
+      try {
+        if (locale !== langToLocale(config.get('defaultLang'))) {
+          // eslint-disable-next-line global-require, import/no-dynamic-require
+          i18nData = require(`../../locale/${locale}/${appName}.js`);
+        }
+      } catch (e) {
+        log.info(`Locale JSON not found or required for locale: "${locale}"`);
+        log.info(`Falling back to default lang: "${config.get('defaultLang')}".`);
+      }
+      const i18n = makeI18n(i18nData, htmlLang);
+
+      const InitialComponent = (
+        <I18nProvider i18n={i18n}>
+          <Provider store={store} key="provider">
+            <RouterContext {...renderProps} />
+          </Provider>
+        </I18nProvider>
+      );
+
+      const errorPage = store.getState().errorPage;
+      if (errorPage && errorPage.hasError) {
+        log.info(`Error page was dispatched to state: ${errorPage.error}`);
+        return next(errorPage.error);
+      }
+
+      const props = { component: InitialComponent };
+
+      // We need to render once because it will force components to
+      // dispatch data loading actions which get processed by sagas.
+      log.info('First component render to dispatch loading actions');
+      ReactDOM.renderToString(<ServerHtml {...pageProps} {...props} />);
+
+      // Send the redux-saga END action to stop sagas from running
+      // indefinitely. This is only done for server-side rendering.
+      store.dispatch(END);
+
+      // Once all sagas have completed, we load the page.
+      return runningSagas
+        .done
         .then(() => {
-          // eslint-disable-next-line global-require
-          let i18nData = {};
-          try {
-            if (locale !== langToLocale(config.get('defaultLang'))) {
-              // eslint-disable-next-line global-require, import/no-dynamic-require
-              i18nData = require(`../../locale/${locale}/${appName}.js`);
-            }
-          } catch (e) {
-            log.info(`Locale JSON not found or required for locale: "${locale}"`);
-            log.info(`Falling back to default lang: "${config.get('defaultLang')}".`);
-          }
-          const i18n = makeI18n(i18nData, htmlLang);
-
-          const InitialComponent = (
-            <I18nProvider i18n={i18n}>
-              <Provider store={store} key="provider">
-                <ReduxAsyncConnect {...renderProps} />
-              </Provider>
-            </I18nProvider>
-          );
-
-          const errorPage = store.getState().errorPage;
-          if (errorPage && errorPage.hasError) {
-            log.info(`Error page was dispatched to state: ${errorPage.error}`);
-            throw errorPage.error;
-          }
-
-          const props = { component: InitialComponent };
-
-          // We need to render once because it will force components to
-          // dispatch data loading actions which get processed by sagas.
-          log.info('First component render to dispatch loading actions');
-          ReactDOM.renderToString(<ServerHtml {...pageProps} {...props} />);
-
-          // Send the redux-saga END action to stop sagas from running
-          // indefinitely. This is only done for server-side rendering.
-          store.dispatch(END);
-
-          // Once all sagas have completed, we load the page.
-          return runningSagas.done.then(() => {
-            log.info('Second component render after sagas have finished');
-            return hydrateOnClient({ props, pageProps, res });
-          });
+          log.info('Second component render after sagas have finished');
+          return hydrateOnClient({ props, pageProps, res });
         })
-        .catch((loadError) => {
-          log.error(`Caught error from loadOnServer(): ${loadError}`);
-          next(loadError);
+        .catch((error) => {
+          log.error(`Caught error during saga loading: ${error}`);
+          next(error);
         });
     });
   });
