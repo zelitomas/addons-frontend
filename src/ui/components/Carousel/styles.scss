@@ -1,0 +1,30 @@
+@import "~amo/css/inc/vars";
+@import "~core/css/inc/mixins";
+@import "~ui/css/vars";
+
+.Carousel {
+  height: $carousel-height-default + 20px;
+  margin: 0 0 10px;
+  overflow-y: hidden;
+
+  @include respond-to(extraSmall) {
+    height: $carousel-height-extraSmall + 20px;
+  }
+
+  @include respond-to(large) {
+    height: $carousel-height-large + 20px;
+  }
+
+  @include respond-to(extraLarge) {
+    height: $carousel-height-extraLarge + 20px;
+  }
+}
+
+.Carousel .Card-contents {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.Carousel-block {
+
+}
