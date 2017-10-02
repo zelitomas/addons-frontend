@@ -119,9 +119,9 @@ export function getRules({ babelQuery, bundleStylesWithJs = false } = {}) {
       test: /\.svg$/,
       use: [{ loader: 'svg-url-loader', options: urlLoaderOptions }],
     }, {
-      test: /\.(jpg|png|gif|webm|mp4|otf|woff|woff2)$/,
+      test: /\.(jpg|png|gif|webm|vtt|mp4|otf|woff|woff2)$/,
       use: [{ loader: 'url-loader', options: urlLoaderOptions }],
-    },
+    }, 
   ];
 }
 

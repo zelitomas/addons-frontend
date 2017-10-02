@@ -18,6 +18,7 @@ export default {
         'otf',
         'woff',
         'woff2',
+	'vtt'
       ],
       parser: WebpackIsomorphicToolsPlugin.url_loader_parser,
     },

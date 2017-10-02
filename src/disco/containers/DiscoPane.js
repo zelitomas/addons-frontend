@@ -17,12 +17,13 @@ import {
   NAVIGATION_CATEGORY,
   VIDEO_CATEGORY,
 } from 'disco/constants';
+
 import { getDiscoResults } from 'disco/actions';
 import Addon from 'disco/components/Addon';
 import videoPoster from 'disco/img/AddOnsPoster.jpg';
 import videoMp4 from 'disco/video/AddOns.mp4';
 import videoWebm from 'disco/video/AddOns.webm';
-
+import subtitles from 'disco/subtitles/en-US.vtt';
 
 export class DiscoPaneBase extends React.Component {
   static propTypes = {
@@ -137,9 +138,11 @@ export class DiscoPaneBase extends React.Component {
                 height="288"
                 className="disco-video"
                 ref={(ref) => { this.video = ref; }}
+                crossOrigin="anonymous"
               >
                 <source src={videoWebm} type="video/webm" />
                 <source src={videoMp4} type="video/mp4" />
+                <track kind="subtitles" src={subtitles} srcLang="en" label="Subtitles" default />
               </video>
               <div className="close-video">
                 <a href="#close" onClick={this.closeVideo}>{i18n.gettext('Close video')}</a>

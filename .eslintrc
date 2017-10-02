@@ -32,7 +32,8 @@
       "\\.png$",
       "\\.scss$",
       "\\.svg$",
-      "\\.webm$"
+      "\\.webm$",
+      "\\.vtt$"
     ],
     "import/resolver": {
       "node": {

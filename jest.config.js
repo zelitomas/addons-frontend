@@ -22,7 +22,7 @@ module.exports = {
     // Alias tests for tests to be able to import helpers.
     '^tests/(.*)$': '<rootDir>/tests/$1',
     // Replaces the following formats with an empty module.
-    '^.+\\.(scss|css|svg|woff|woff2|mp4|webm)$': '<rootDir>/tests/emptyModule',
+    '^.+\\.(scss|css|svg|woff|woff2|mp4|vtt|webm)$': '<rootDir>/tests/emptyModule',
   },
   setupTestFrameworkScriptFile: '<rootDir>/tests/setup.js',
   testPathIgnorePatterns: [
